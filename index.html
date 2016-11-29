@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	    
+		<title>d3 Reports</title>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+<div class="container">
+	<br>
+	<br>
+	<div class="horizontal dividerline">
+			jQuery d3 REPORTS
+		</div>
+        <div class="waves-effect waves-green btn right animate-graphs">
+            Animate
+       </div>
+	<br>
+	<br>
+	<div class="graph-line">
+            
+        </div>
+	<br>
+	<br>
+		<div class="horizontal under">
+			
+		</div>
+        <div class="row nomargin">
+            <div class="col s12 m3 nopadding center-align">
+                <div class="graph-line2"></div>
+            </div>
+			
+            <div class="col s12 m3 nopadding center-align">
+                <div class="graph-line3"></div>
+            </div>
+			
+            <div class="col s12 m3 nopadding center-align">
+                <div class="graph-line4"></div>
+            </div>
+			
+            <div class="col s12 m3 nopadding center-align">
+                <div class="graph-line5"></div>
+            </div>
+        </div>
+		<div class="horizontal under">
+			
+		</div>
+	<br>
+	<br>
+        <div class="row nomargin">
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie"></div>
+            </div>
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie2"></div>
+            </div>
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie4"></div>
+            </div>
+        </div>
+        
+	<br>
+	<br>
+		<div class="horizontal under">
+			
+		</div>
+	<br>
+	<br>
+        <div class="row nomargin">
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie5"></div>
+            </div>
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie3"></div>
+            </div>
+            <div class="col s12 m4 nopadding center-align">
+                <div class="graph-pie6"></div>
+            </div>
+        </div>
+		
+	<br>
+	<br>
+		<div class="horizontal under">
+			
+		</div>
+	<br>
+	<br>
+        <div class="row nomargin">
+            <div class="col s5 nopadding">
+                <div class="graph-bar"></div>
+            </div>
+             
+            <div class="col s7 nopadding">
+                <div class="graph-bar3"></div>
+            </div>
+             
+        </div>
+	<br>
+	<br>
+		<div class="horizontal under">
+			
+		</div>
+        <div class="waves-effect waves-green btn right animate-graphs">
+            Animate
+       </div>
+		<div class="row">
+			<form class="col s12">
+			  <div class="row">
+				<div class="input-field col s12">
+				  <textarea id="textarea1" class="materialize-textarea"></textarea>
+				  <label for="textarea1">Text Content to report</label>
+				</div>
+			  </div>
+			</form>
+		  </div>
+        <div class="waves-effect waves-green btn right add-content">
+            Add Text Content
+       </div>
+	<br>
+	<br>
+	<br>
+	<br>
+		<div class="horizontal dividerline">
+			END
+		</div><br><br>
+</div>
+
+	  <div id="reportBuilder" class="z-depth-4">
+		  <div id="reportBuilderClose"><i class="material-icons teal-text pointer">fast_rewind</i></div>
+		  <div id="reportBuilderContent"></div>
+		  <div id="reportBuilderDownload" class="waves-effect waves-green btn right add-content">Download</div>
+	  </div>
+	  <div id="reportBuilderOpen"><i class="material-icons teal-text pointer">fast_forward</i></div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+       	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" integrity="sha256-xI/qyl9vpwWFOXz7+x/9WkG5j/SVnSw21viy8fWwbeE="   crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.0.0/jszip.min.js"></script>
+	<script src="pptxgen.js"></script>
+	<script src="jquery.d3.report.js"></script>
+	<script type="text/javascript">
+		var Test = {
+		    init:function(client_id){
+			var that = this;
+			that.closeBuilder;
+			$("#reportBuilderContent").reportBuilder();
+			$("#reportBuilderDownload").click(function(){
+				$.reportZipAndDownload();
+			});
+			$(".add-content").click(function(){
+				if ($("#textarea1").val()!="") {
+					$.addReportContent($("#textarea1").val());
+					that.popoutReportBuilder();
+                }
+			});
+			$("#reportBuilderOpen").click(function(){
+				$("#reportBuilder").animate({"width":"20em"},350).addClass("active");
+			});
+			$("#reportBuilderClose").click(function(){
+				$("#reportBuilder").animate({"width":0},350).removeClass("active");
+			});
+			this.time = new Date().getTime();
+			this.setTestData();
+			$('.graph-line').data("series",this.testdata);
+			$('.graph-line').reportLineChart();
+			$('.graph-line2').data("series",this.testdata10);
+			$('.graph-line3').data("series",this.testdata11);
+			$('.graph-line4').data("series",this.testdata12);
+			$('.graph-line5').data("series",this.testdata13);
+			$('.graph-line2,.graph-line3,.graph-line4,.graph-line5').reportLineChart("radial",{xAxis:{on:false,orient:"left"},yAxis:{on:false,ticks:0,orient:"left",margin:{top:0,left:0,bottom:0,top:0}}});
+			
+		
+		
+			$('.graph-pie').data("series",this.testdata3);
+			$('.graph-pie').reportPieChart("single");
+		
+			$('.graph-pie2').data("series",this.testdata4);
+			$('.graph-pie4').data("series",this.testdata5);
+			$('.graph-pie2,.graph-pie4').reportPieChart("double",{leftColor:randomColor({hue: 'red',seed: 'green'}),rightColor:randomColor({hue: 'green',seed: 'green'})});
+		
+			$('.graph-pie3').data("series",this.testdata2);
+			$('.graph-pie3').reportPieChart("normal",{innerRadius:0.75});
+		
+			$('.graph-pie5').data("series",this.testdata2);
+			$('.graph-pie5').reportPieChart("normal",{innerRadius:0});
+		
+		
+			$('.graph-pie6').data("series",this.testdata2);
+			$('.graph-pie6').reportPieChart("normal",{innerRadius:0.90});
+		
+			$('.graph-bar').data("series",this.testdata2);
+			$('.graph-bar').reportBarChart();
+		
+		
+			$('.graph-bar3').data("series",this.testdata2);
+			$('.graph-bar3').reportBarChart("horizontal",{xAxis:{on:true,orient:"left"}});
+			$('.graph-line,.graph-line2,.graph-line3,.graph-line4,.graph-line5,.graph-pie,.graph-pie2,.graph-pie3,.graph-pie4,.graph-pie5,.graph-pie6,.graph-bar,.graph-bar3').on('report-button',function(){
+			    that.popoutReportBuilder();
+			});
+			$(".animate-graphs").click(function(){
+			    
+			    var animation = function(){
+				that.setTestData();
+				$('.graph-line').data("series",that.testdata);
+				$('.graph-line2').data("series",that.testdata10);
+				$('.graph-line3').data("series",that.testdata11);
+				$('.graph-line4').data("series",that.testdata12);
+				$('.graph-line5').data("series",that.testdata13);
+				$('.graph-pie').data("series",that.testdata3);
+				$('.graph-pie2').data("series",that.testdata4);
+				$('.graph-pie4').data("series",that.testdata5);
+				$('.graph-pie3').data("series",that.testdata2);
+				$('.graph-pie5').data("series",that.testdata2);
+				$('.graph-pie6').data("series",that.testdata2);
+				$('.graph-bar').data("series",that.testdata2);
+				$('.graph-bar3').data("series",that.testdata2);
+				$('.graph-line,.graph-line2,.graph-line3,.graph-line4,.graph-line5,.graph-pie,.graph-pie2,.graph-pie3,.graph-pie4,.graph-pie5,.graph-pie6,.graph-bar,.graph-bar3').reportGraphRender();
+			    }
+			    if ($(this).hasClass("fired")) {
+					$(".animate-graphs").html("ANIMATE")
+					clearInterval(that.testInterval);
+					$(".animate-graphs").removeClass("fired")
+			    }else{
+					$(".animate-graphs").html("STOP")
+					that.testInterval = setInterval(animation,2000);
+					animation();
+					$(".animate-graphs").addClass("fired")
+			    }
+			    
+			})
+		    },
+		    setTestData:function(){
+			var that = this;
+			this.testdata = [
+			    {color:randomColor({hue: 'red',seed: 'green'}),data:[
+				{name:that.time+10000,value:80*Math.random()},
+				{name:that.time+20000,value:90*Math.random()},
+				{name:that.time+30000,value:85*Math.random()},
+				{name:that.time+40000,value:70*Math.random()},
+				{name:that.time+50000,value:120*Math.random()},
+			    ]},
+			    {color:randomColor({hue: 'green',seed: 'green'}),data:[
+				{name:that.time+10000,value:80*Math.random()},
+				{name:that.time+20000,value:70*Math.random()},
+				{name:that.time+30000,value:120*Math.random()},
+				{name:that.time+40000,value:90*Math.random()},
+				{name:that.time+50000,value:85*Math.random()},
+			    ]}
+			];
+		
+			
+			this.testdata2 = [
+			    {name:"one",value:80*Math.random(),color:randomColor({hue: 'red',seed: 'green'})},
+			    {name:"two",value:70*Math.random(),color:randomColor({hue: 'blue',seed: 'green'})},
+			    {name:"three",value:85*Math.random(),color:randomColor({hue: 'green',seed: 'green'})},
+			    {name:"four",value:50*Math.random(),color:randomColor({hue: 'orange',seed: 'green'})},
+			    {name:"five",value:220*Math.random(),color:randomColor({hue: 'yellow',seed: 'green'})}
+			];
+		
+			this.testdata3 = {name:that.time+10000,value:100*Math.random(),color:randomColor({hue: 'green',seed: 'green'})};
+		
+			this.testdata4 = {name:that.time+10000,value:200*Math.random()-100,color:randomColor({hue: 'red',seed: 'green'})};
+			this.testdata5 = {name:that.time+10000,value:100*Math.random(),color:randomColor({hue: 'red',seed: 'green'})};
+			this.testdata10 = this.getTestDataRadial(randomColor({hue: 'red',seed: 'green'}));
+			
+			this.testdata11 = this.getTestDataRadial(randomColor({hue: 'green',seed: 'green'}));
+			
+			this.testdata12 = this.getTestDataRadial(randomColor({hue: 'blue',seed: 'green'}));
+			
+			this.testdata13 = this.getTestDataRadial(randomColor({hue: 'yellow',seed: 'green'}));
+			
+		    },
+		    refreshReport:function(){
+				
+				
+		    },
+			getTestDataRadial:function(color){
+				var that=this;
+				return [
+					{color:color,data:[
+					{name:that.time+10000,value:80*Math.random()+200},
+					{name:that.time+20000,value:90*Math.random()+200},
+					{name:that.time+30000,value:85*Math.random()+200},
+					{name:that.time+40000,value:70*Math.random()+200},
+					{name:that.time+50000,value:120*Math.random()+200},
+					{name:that.time+60000,value:80*Math.random()+200},
+					{name:that.time+70000,value:70*Math.random()+200},
+					{name:that.time+80000,value:120*Math.random()+200},
+					{name:that.time+90000,value:90*Math.random()+200},
+					{name:that.time+100000,value:85*Math.random()+200},
+					{name:that.time+110000,value:80*Math.random()+200},
+					{name:that.time+120000,value:90*Math.random()+200},
+					{name:that.time+130000,value:85*Math.random()+200},
+					{name:that.time+140000,value:70*Math.random()+200},
+					{name:that.time+150000,value:120*Math.random()+200},
+					{name:that.time+160000,value:80*Math.random()+200},
+					{name:that.time+170000,value:70*Math.random()+200},
+					{name:that.time+180000,value:120*Math.random()+200},
+					{name:that.time+190000,value:90*Math.random()+200},
+					{name:that.time+200000,value:85*Math.random()+200},
+					{name:that.time+210000,value:80*Math.random()+200},
+					{name:that.time+220000,value:90*Math.random()+200},
+					{name:that.time+230000,value:85*Math.random()+200},
+					{name:that.time+240000,value:70*Math.random()+200},
+					{name:that.time+250000,value:120*Math.random()+200},
+					{name:that.time+260000,value:80*Math.random()+200},
+					{name:that.time+270000,value:70*Math.random()+200},
+					{name:that.time+280000,value:120*Math.random()+200},
+					{name:that.time+290000,value:90*Math.random()+200},
+					{name:that.time+300000,value:85*Math.random()+200},
+					{name:that.time+310000,value:80*Math.random()+200},
+					{name:that.time+320000,value:90*Math.random()+200},
+					{name:that.time+330000,value:85*Math.random()+200},
+					{name:that.time+340000,value:70*Math.random()+200},
+					{name:that.time+350000,value:120*Math.random()+200},
+					{name:that.time+360000,value:80*Math.random()+200},
+					{name:that.time+370000,value:70*Math.random()+200},
+					{name:that.time+380000,value:120*Math.random()+200},
+					{name:that.time+390000,value:90*Math.random()+200},
+					{name:that.time+400000,value:85*Math.random()+200},
+					{name:that.time+410000,value:80*Math.random()+200},
+					{name:that.time+420000,value:90*Math.random()+200},
+					{name:that.time+430000,value:85*Math.random()+200},
+					{name:that.time+440000,value:70*Math.random()+200},
+					{name:that.time+450000,value:120*Math.random()+200},
+					{name:that.time+460000,value:80*Math.random()+200},
+					{name:that.time+470000,value:70*Math.random()+200},
+					{name:that.time+480000,value:120*Math.random()+200},
+					{name:that.time+490000,value:90*Math.random()+200},
+					{name:that.time+500000,value:85*Math.random()+200},
+					{name:that.time+510000,value:80*Math.random()+200},
+					{name:that.time+520000,value:90*Math.random()+200},
+					{name:that.time+530000,value:85*Math.random()+200},
+					{name:that.time+540000,value:70*Math.random()+200},
+					{name:that.time+550000,value:120*Math.random()+200},
+					{name:that.time+560000,value:80*Math.random()+200},
+					{name:that.time+570000,value:70*Math.random()+200},
+					{name:that.time+580000,value:120*Math.random()+200},
+					{name:that.time+590000,value:90*Math.random()+200},
+					{name:that.time+600000,value:85*Math.random()+200},
+					]}
+				];
+			},
+			popoutReportBuilder:function(){
+				var that = this;
+				clearTimeout(that.closeBuilder);
+				if (!($("#reportBuilder").hasClass("active"))) {
+                    $("#reportBuilderOpen").trigger("click");
+					that.closeBuilder = setTimeout(function(){
+						$("#reportBuilderClose").trigger("click");
+					},3000)
+					$("#reportBuilder").one("mouseenter",function(){
+						clearTimeout(that.closeBuilder);
+					})
+					
+                }
+			}
+		}
+
+		Test.init();
+
+	</script>
+	
+	
+   </body>
+</html>
+		

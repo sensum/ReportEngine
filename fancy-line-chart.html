@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	    
+		<title>d3 Reports</title>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body class="grey lighten-4">
+<div class="container">
+    <h5>Line Chart</h5>
+    <ul><li>
+        Multiple data series at different start/end times.
+    </li><li>
+        Controling the min/max of the x-axis/y-axis.
+    </li><li>
+        Adding a dot to the end of the line. You can add one to the start and control the size (radius).
+    </li><li>
+        Adding a blur effect to the line. You can control the effect standard deviation.
+    </li><li>
+        This example also uses cardinal interpolation.
+    </li></ul>
+   
+    <div class="waves-effect waves-green btn-flat right animate-graphs">
+        Animate
+    </div>
+	<div class="graph-line">
+            
+    </div>
+    
+</div>
+
+	  <div id="reportBuilder" class="z-depth-4">
+		  <div id="reportBuilderClose"><i class="material-icons teal-text pointer">fast_rewind</i></div>
+		  <div id="reportBuilderContent"></div>
+	  </div>
+	  <div id="reportBuilderOpen"><i class="material-icons teal-text pointer">fast_forward</i></div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+       	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.js"></script>
+	<script src="jquery.d3.report.js"></script>
+	<script type="text/javascript">
+		var Test = {
+		    init:function(client_id){
+			var that = this;
+		
+				$("#reportBuilderOpen").click(function(){
+				$("#reportBuilder").animate({"width":"14em"},350);
+			    });
+			    $("#reportBuilderClose").click(function(){
+				$("#reportBuilder").animate({"width":0},350);
+			    });
+			this.time = 1461000062638;
+			this.setTestData();
+			$('.graph-line').data("series",this.testdata);
+			
+            
+            $('.graph-line').reportLineChart("area",{background:"background.png",strokeColor:"silver",yAxis:{on:false,ticks:5,orient:"left"},interpolation:"cardinal",blurFilter:true,showEndDot:true,yAxisFactor:.1,xAxisMax:1461000062638+100000,xAxisMin:1461000062638+1000,yAxisMax:100000,yAxisMin:-10000});
+		
+		
+			$('.graph-line').on('report-button',function(){
+			    that.refreshReport();
+			});
+			$(".animate-graphs").click(function(){
+			    
+			    var animation = function(){
+				that.setTestData();
+				$('.graph-line').data("series",that.testdata);
+				$('.graph-line').reportGraphRender();
+			    }
+			    if ($(this).hasClass("fired")) {
+				$(this).html("ANIMATE")
+				clearInterval(that.testInterval);
+				$(this).removeClass("fired")
+			    }else{
+				$(this).html("STOP")
+				that.testInterval = setInterval(animation,1500);
+				animation();
+				$(this).addClass("fired")
+			    }
+			    
+			})
+		    },
+		    setTestData:function(){
+                var that = this;
+                this.testdata = [
+                    {color:randomColor({hue: 'neon',seed: 'goodse'}),data:[
+                    {name:that.time+10000,value:800*Math.random()},
+                    {name:that.time+20000,value:9000*Math.random()},
+                    {name:that.time+30000,value:45000*Math.random()},
+                    {name:that.time+40000,value:70000*Math.random()},
+                    {name:that.time+50000,value:100000*Math.random()},
+                    ]},
+                    {color:randomColor({hue: 'neon',seed: 'haha'}),data:[
+                    {name:that.time+40000,value:800*Math.random()},
+                    {name:that.time+50000,value:9000*Math.random()},
+                    {name:that.time+60000,value:45000*Math.random()},
+                    {name:that.time+70000,value:70000*Math.random()},
+                    {name:that.time+80000,value:100000*Math.random()},
+                    ]}
+                ];
+            
+		    },
+		    refreshReport:function(){
+			var report = $.getReport();
+			$("#reportBuilderContent").html("");
+			report.forEach(function(r,i){
+			    switch (r.type) {
+				case "image":
+                    var ele = $('<div class="report-image z-depth-1" style="background: transparent url('+r.media+'); background-position:top left; background-size: cover;"/>');
+				    $("#reportBuilderContent").append(ele);
+                    ele.click(function(){
+                        window.open(r.media, '_blank');    
+                    })
+				    break;
+				case "text":
+				    
+				    break;
+				
+			    }
+			});
+		    }
+		}
+
+		Test.init();
+
+	</script>
+	
+	
+   </body>
+</html>
+		
